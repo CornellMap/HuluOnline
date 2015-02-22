@@ -52,6 +52,6 @@ public class Dictionary {
 	
 	
 	public static void main(String[] args) {
-		System.out.println(new Dictionary().wordList.size());
+		System.out.println(new Dictionary().wordList.contains("fifteenth"));
 	}
 }

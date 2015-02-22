@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +24,7 @@ public class Guess {
 		guessed.clear();
 		prison = new Prison(obj);
 		nowTmpToken = prison.token;
+		freqPosition = 0;
 	}
 	
 	public void guessChar(char ch) {
@@ -34,11 +35,62 @@ public class Guess {
 		guessed.add(ch);
 	}
 	
+	public char nextFrequency() {
+		while (freqPosition < Dictionary.frequency.length && guessed.contains(Dictionary.frequency[freqPosition])) {
+			freqPosition++;
+		}
+		if (freqPosition == Dictionary.frequency.length) return '$';
+		return Dictionary.frequency[freqPosition];
+	}
+	
 	public void doGuess() {
 		if (guessed.size() < 3) {
-			guessChar(Dictionary.frequency[freqPosition++]);
+			guessChar(nextFrequency());
 		} else {
-			
+			ArrayList<ArrayList<String>> guessPattern = new ArrayList<ArrayList<String>>();
+			int minPossible = 1 << 20;
+			for (String pattern : prison.state) {
+				ArrayList<String> possible = getPossible(pattern);
+				guessPattern.add(possible);
+				minPossible = Math.min(minPossible, possible.size() > 0 ? possible.size() : minPossible);
+			}
+			if (minPossible > 10) {
+				// Too ambiguious to be determined
+				guessChar(nextFrequency());
+			} else if (minPossible == 1){
+				// Determined by majority occurence of solo possible
+				int[] occurence = new int[26];
+				for (int i = 0; i < 26; i++) occurence[i] = 0;
+				
+				for (int i = 0; i < guessPattern.size(); i++) {
+					if (guessPattern.get(i).size() == 1) {
+						String word = guessPattern.get(i).get(0);
+						for (int j = 0; j < word.length(); j++) {
+							if (word.charAt(j) != '_') {
+								occurence[word.charAt(j) - 'a']++;
+							}
+						}
+					}
+				}
+				
+				int maxOccur = 0;
+				char c = '$';
+				for (int i = 0; i < 26; i++) {
+					if (occurence[i] > maxOccur) {
+						maxOccur = occurence[i];
+						c = (char)(i + 'a');
+					}
+				}
+				if (c != '$') {
+					guessChar(c);
+				} else {
+					guessChar(nextFrequency());
+				}
+			} else {
+				// majority vote, then scale by letter frequency
+				
+			}
+			System.out.println(guessPattern);
 		}
 		
 		System.out.println("Prison: " + prison.token + " Status: " + prison.status +" Now State: " + prison.state);
@@ -78,7 +130,6 @@ public class Guess {
 					}
 				}
 				if (valid) {
-					System.out.println(word);
 					StringBuffer newWord = new StringBuffer("");
 					for (int i = 0; i < word.length(); i++) {
 						if (pattern.charAt(i) == '_') newWord.append(word.charAt(i));
@@ -93,13 +144,16 @@ public class Guess {
 	
 	public static void main(String[] args) {
 //		Guess guess = new Guess();
-//		guess.newGuess();
-//		guess.doGuess();
-//		guess.guessed.add('r');
-//		ArrayList<String> result = guess.getPossible("_r_");
+//		//guess.newGuess();
+//		//guess.doGuess();
+//		guess.guessed.add('t');
+//		guess.guessed.add('e');
+//		guess.guessed.add('a');
+//		
+//		ArrayList<String> result = guess.getPossible("t_e_");
 //		for (String word : result) {
 //			System.out.println(word);
 //		}
-		
+//		
 	}
 }

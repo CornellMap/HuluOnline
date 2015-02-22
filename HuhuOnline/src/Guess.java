@@ -12,11 +12,17 @@ public class Guess {
 	Set<Character> guessed = new HashSet<Character>();
 	// Prison
 	Prison prison = null;
+	// Frequency position;
+	int freqPosition = 0;
+	
+	String nowTmpToken = "";
+	int success = 0, fail = 0;
 	
 	public void newGuess() {
 		JSONObject obj = RestClient.getContent("http://gallows.hulu.com/play?code=xiamin1991@gmail.com");
 		guessed.clear();
 		prison = new Prison(obj);
+		nowTmpToken = prison.token;
 	}
 	
 	public void guessChar(char ch) {
@@ -24,13 +30,35 @@ public class Guess {
 			"http://gallows.hulu.com/play?code=xiamin1991@gmail.com&token=" + prison.token + "&guess=" + ch
 		);
 		prison.updatePrison(obj);
+		guessed.add(ch);
 	}
 	
 	public void doGuess() {
-		prison.remainingGuesses--;
-		if (prison.remainingGuesses == 0) prison.status = "DEAD";
-		if (Math.random() < 0.1) prison.status = "FREE";
+		if (guessed.size() < 3) {
+			guessChar(Dictionary.frequency[freqPosition++]);
+		} else {
+			
+		}
+		
 		System.out.println("Prison: " + prison.token + " Status: " + prison.status +" Now State: " + prison.state);
+		if (prison.status == "FREE" && nowTmpToken == prison.token) {
+			success++;
+			nowTmpToken = "";
+		}
+		if (prison.status == "DEAD" && nowTmpToken == prison.token) {
+			fail++;
+			nowTmpToken = "";
+		}
+	}
+	
+	public void resetRatio() {
+		success = fail = 0;
+	}
+	
+	public void printRatio() {
+		if (success + fail > 0) {
+			System.out.println("Success Ratio: " + success / (double)(success + fail));
+		}
 	}
 	
 	private ArrayList<String> getPossible(String pattern) {
@@ -63,9 +91,9 @@ public class Guess {
 	}
 	
 	public static void main(String[] args) {
-		Guess guess = new Guess();
-		guess.newGuess();
-		guess.doGuess();
+//		Guess guess = new Guess();
+//		guess.newGuess();
+//		guess.doGuess();
 //		guess.guessed.add('r');
 //		ArrayList<String> result = guess.getPossible("_r_");
 //		for (String word : result) {

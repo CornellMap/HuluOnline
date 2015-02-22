@@ -1,4 +1,5 @@
 import java.net.*;
+
 import java.io.*;
 
 import org.json.JSONObject;
@@ -24,7 +25,10 @@ public class RestClient {
 	}
 	
     public static void main(String[] args) throws Exception {
-        JSONObject obj = RestClient.getContent("http://www.songrenchu.com/tMap/");
-        System.out.println(obj.get("response"));
+//        JSONObject obj = RestClient.getContent("http://gallows.hulu.com/play?code=xiamin1991@gmail.com");
+//        System.out.println(obj.get("token"));
+//        System.out.println(obj.get("state"));
+//        
+//    	http://gallows.hulu.com/play?code=xiamin1991@gmail.com&token=8280899&guess=e
     }
 }

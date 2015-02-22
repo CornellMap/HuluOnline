@@ -8,6 +8,7 @@ public class Solution {
     		if (guess.prison.status.equals("ALIVE")) {
     			guess.doGuess();
     		} else {
+    			guess.printRatio();
     			guess.newGuess();
     		}
     		

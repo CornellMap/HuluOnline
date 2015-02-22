@@ -4,7 +4,9 @@ import java.io.FileReader;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
-
+/* Use the English letter frequency(http://www.math.cornell.edu/~mec/2003-2004/cryptography/subs/frequencies.html)
+ * Guess from the high frequency letter to low frequency letter every time.
+ * */
 public class Dictionary {
 	public static char[] frequency = new char[]{
 		'e','t','a','o','i','n','s',
@@ -22,6 +24,7 @@ public class Dictionary {
 	
 	Set<String> wordList = new HashSet<String>();
 	
+/*Add the dictionaries downloaded from the internet */	
 	public Dictionary() {
 		String[] wordListFiles = new String[]{
 				"./data/adj.txt", 

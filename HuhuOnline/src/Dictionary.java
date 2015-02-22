@@ -35,6 +35,8 @@ public class Dictionary {
 				"./data/placename.txt", 
 				"./data/sense.txt",
 				"./data/common.txt",
+				"./data/allverb.txt",
+				
 			};
 		Scanner s = null;
 		for (String fileName : wordListFiles) {

@@ -23,6 +23,7 @@ public class Dictionary {
 				"./data/verb.txt", 
 				"./data/namelist.txt", 
 				"./data/placename.txt", 
+				"./data/sense.txt",
 			};
 		Scanner s = null;
 		for (String fileName : wordListFiles) {

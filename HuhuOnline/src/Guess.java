@@ -276,103 +276,40 @@ public class Guess {
 										possible.size() > 0 ? possible.size()
 												: minPossible);
 					}
-//					/*if (minPossible > 10) {
-//						// Too ambiguious to be determined
-//						int[] occurence = new int[26];
-//						for (int i = 0; i < 26; i++)
-//							occurence[i] = 0;
-//	
-//						for (int i = 0; i < guessPattern.size(); i++) {
-//							for (int k = 0; k < guessPattern.get(i).size(); k++) {
-//								String word = guessPattern.get(i).get(k);
-//								for (int j = 0; j < word.length(); j++) {
-//									if (word.charAt(j) != '_') {
-//										occurence[word.charAt(j) - 'a']++;
-//									}
-//								}
-//							}
-//						}
-//	
-//						double maxOccur = 0;
-//						char c = '$';
-//						for (int i = 0; i < 26; i++) {
-//							if (occurence[i] * Dictionary.frequencyNumber[i] > maxOccur) {
-//								maxOccur = occurence[i]
-//										* Dictionary.frequencyNumber[i];
-//								c = (char) (i + 'a');
-//							}
-//						}
-//						if (c != '$') {
-//							guessChar(c);
-//						} else {
-//							guessChar(nextFrequency());
-//						}
-//					} else */
-//					if (minPossible == 1) {
-//						// Determined by majority occurence of solo possible
-//						int[] occurence = new int[26];
-//						for (int i = 0; i < 26; i++)
-//							occurence[i] = 0;
-//	
-//						for (int i = 0; i < guessPattern.size(); i++) {
-//							if (guessPattern.get(i).size() == 1) {
-//								String word = guessPattern.get(i).get(0);
-//								for (int j = 0; j < word.length(); j++) {
-//									if (word.charAt(j) != '_') {
-//										occurence[word.charAt(j) - 'a']++;
-//									}
-//								}
-//							}
-//						}
-//	
-//						int maxOccur = 0;
-//						char c = '$';
-//						for (int i = 0; i < 26; i++) {
-//							if (occurence[i] > maxOccur) {
-//								maxOccur = occurence[i];
-//								c = (char) (i + 'a');
-//							}
-//						}
-//						if (c != '$') {
-//							guessChar(c);
-//						} else {
-//							guessChar(nextFrequency());
-//						}
-//					} else 
-					{
-						// majority vote, then scale by letter frequency
-						int[] occurence = new int[26];
-						for (int i = 0; i < 26; i++)
-							occurence[i] = 0;
-	
-						for (int i = 0; i < guessPattern.size(); i++) {
-							//if (guessPattern.get(i).size() < 10) {
-								for (int k = 0; k < guessPattern.get(i).size(); k++) {
-									String word = guessPattern.get(i).get(k);
-									for (int j = 0; j < word.length(); j++) {
-										if (word.charAt(j) != '_') {
-											occurence[word.charAt(j) - 'a']++;
-										}
+
+					// majority vote, then scale by letter frequency
+					int[] occurence = new int[26];
+					for (int i = 0; i < 26; i++)
+						occurence[i] = 0;
+
+					for (int i = 0; i < guessPattern.size(); i++) {
+						//if (guessPattern.get(i).size() < 10) {
+							for (int k = 0; k < guessPattern.get(i).size(); k++) {
+								String word = guessPattern.get(i).get(k);
+								for (int j = 0; j < word.length(); j++) {
+									if (word.charAt(j) != '_') {
+										occurence[word.charAt(j) - 'a']++;
 									}
 								}
-							//}
-						}
-	
-						double maxOccur = 0;
-						char c = '$';
-						for (int i = 0; i < 26; i++) {
-							if (occurence[i] * Dictionary.frequencyNumber[i] > maxOccur) {
-								maxOccur = occurence[i]
-										* Dictionary.frequencyNumber[i];
-								c = (char) (i + 'a');
 							}
-						}
-						if (c != '$') {
-							guessChar(c);
-						} else {
-							guessChar(nextFrequency());
+						//}
+					}
+
+					double maxOccur = 0;
+					char c = '$';
+					for (int i = 0; i < 26; i++) {
+						if (occurence[i] * Dictionary.frequencyNumber[i] > maxOccur) {
+							maxOccur = occurence[i]
+									* Dictionary.frequencyNumber[i];
+							c = (char) (i + 'a');
 						}
 					}
+					if (c != '$') {
+						guessChar(c);
+					} else {
+						guessChar(nextFrequency());
+					}
+				
 				}
 			}
 		}
